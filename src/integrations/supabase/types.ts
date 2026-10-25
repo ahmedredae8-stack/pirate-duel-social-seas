@@ -14,16 +14,282 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      players: {
+        Row: {
+          id: string
+          user_id: string | null
+          name: string
+          username_norm: string | null
+          theme_id: string
+          avatar_index: number
+          score: number
+          last_seen: string
+          created_at: string
+          avatar_url: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          name: string
+          username_norm?: string | null
+          theme_id?: string
+          avatar_index?: number
+          score?: number
+          last_seen?: string
+          created_at?: string
+          avatar_url?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          name?: string
+          username_norm?: string | null
+          theme_id?: string
+          avatar_index?: number
+          score?: number
+          last_seen?: string
+          created_at?: string
+          avatar_url?: string | null
+        }
+        Relationships: []
+      }
+      friendships: {
+        Row: {
+          id: string
+          requester_id: string
+          addressee_id: string
+          status: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          requester_id: string
+          addressee_id: string
+          status?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          requester_id?: string
+          addressee_id?: string
+          status?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          id: string
+          sender_id: string
+          recipient_id: string | null
+          body: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          sender_id: string
+          recipient_id?: string | null
+          body: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          sender_id?: string
+          recipient_id?: string | null
+          body?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      tribes: {
+        Row: {
+          id: string
+          name: string
+          emblem: string
+          motto: string
+          score: number
+          owner_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          emblem?: string
+          motto?: string
+          score?: number
+          owner_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          emblem?: string
+          motto?: string
+          score?: number
+          owner_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      tribe_members: {
+        Row: {
+          id: string
+          tribe_id: string
+          player_id: string
+          rank: string
+          contribution: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          tribe_id: string
+          player_id: string
+          rank?: string
+          contribution?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          tribe_id?: string
+          player_id?: string
+          rank?: string
+          contribution?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      fleet_layout: {
+        Row: {
+          id: string
+          lanes: Json
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          lanes?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          lanes?: Json
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          user_id: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
+      artwork_poses: {
+        Row: {
+          id: string
+          category: string
+          subject: string
+          pose: string
+          image_path: string
+          created_by: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          category: string
+          subject: string
+          pose: string
+          image_path: string
+          created_by: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          category?: string
+          subject?: string
+          pose?: string
+          image_path?: string
+          created_by?: string
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ship_overrides: {
+        Row: {
+          product_id: string
+          name: string | null
+          description: string | null
+          price: number | null
+          hidden: boolean
+          updated_at: string
+        }
+        Insert: {
+          product_id: string
+          name?: string | null
+          description?: string | null
+          price?: number | null
+          hidden?: boolean
+          updated_at?: string
+        }
+        Update: {
+          product_id?: string
+          name?: string | null
+          description?: string | null
+          price?: number | null
+          hidden?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      catches: {
+        Row: {
+          id: string
+          user_id: string
+          fish_id: string
+          qty: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          fish_id: string
+          qty?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          fish_id?: string
+          qty?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      owns_player: { Args: { _player_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +416,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: { app_role: ["admin", "moderator", "user"] },
   },
 } as const
