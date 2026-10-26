@@ -14,270 +14,323 @@ export type Database = {
   }
   public: {
     Tables: {
-      players: {
-        Row: {
-          id: string
-          user_id: string | null
-          name: string
-          username_norm: string | null
-          theme_id: string
-          avatar_index: number
-          score: number
-          last_seen: string
-          created_at: string
-          avatar_url: string | null
-        }
-        Insert: {
-          id?: string
-          user_id?: string | null
-          name: string
-          username_norm?: string | null
-          theme_id?: string
-          avatar_index?: number
-          score?: number
-          last_seen?: string
-          created_at?: string
-          avatar_url?: string | null
-        }
-        Update: {
-          id?: string
-          user_id?: string | null
-          name?: string
-          username_norm?: string | null
-          theme_id?: string
-          avatar_index?: number
-          score?: number
-          last_seen?: string
-          created_at?: string
-          avatar_url?: string | null
-        }
-        Relationships: []
-      }
-      friendships: {
-        Row: {
-          id: string
-          requester_id: string
-          addressee_id: string
-          status: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          requester_id: string
-          addressee_id: string
-          status?: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          requester_id?: string
-          addressee_id?: string
-          status?: string
-          created_at?: string
-        }
-        Relationships: []
-      }
-      messages: {
-        Row: {
-          id: string
-          sender_id: string
-          recipient_id: string | null
-          body: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          sender_id: string
-          recipient_id?: string | null
-          body: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          sender_id?: string
-          recipient_id?: string | null
-          body?: string
-          created_at?: string
-        }
-        Relationships: []
-      }
-      tribes: {
-        Row: {
-          id: string
-          name: string
-          emblem: string
-          motto: string
-          score: number
-          owner_id: string
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          name: string
-          emblem?: string
-          motto?: string
-          score?: number
-          owner_id: string
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          name?: string
-          emblem?: string
-          motto?: string
-          score?: number
-          owner_id?: string
-          created_at?: string
-        }
-        Relationships: []
-      }
-      tribe_members: {
-        Row: {
-          id: string
-          tribe_id: string
-          player_id: string
-          rank: string
-          contribution: number
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          tribe_id: string
-          player_id: string
-          rank?: string
-          contribution?: number
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          tribe_id?: string
-          player_id?: string
-          rank?: string
-          contribution?: number
-          created_at?: string
-        }
-        Relationships: []
-      }
-      fleet_layout: {
-        Row: {
-          id: string
-          lanes: Json
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id: string
-          lanes?: Json
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          lanes?: Json
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          user_id: string
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Insert: {
-          id?: string
-          user_id: string
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Update: {
-          id?: string
-          user_id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-        }
-        Relationships: []
-      }
       artwork_poses: {
         Row: {
-          id: string
           category: string
-          subject: string
-          pose: string
-          image_path: string
-          created_by: string
           created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          category: string
-          subject: string
-          pose: string
-          image_path: string
           created_by: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          category?: string
-          subject?: string
-          pose?: string
-          image_path?: string
-          created_by?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      ship_overrides: {
-        Row: {
-          product_id: string
-          name: string | null
-          description: string | null
-          price: number | null
-          hidden: boolean
+          id: string
+          image_path: string
+          pose: string
+          subject: string
           updated_at: string
         }
         Insert: {
-          product_id: string
-          name?: string | null
-          description?: string | null
-          price?: number | null
-          hidden?: boolean
+          category: string
+          created_at?: string
+          created_by: string
+          id?: string
+          image_path: string
+          pose: string
+          subject: string
           updated_at?: string
         }
         Update: {
-          product_id?: string
-          name?: string | null
-          description?: string | null
-          price?: number | null
-          hidden?: boolean
+          category?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          image_path?: string
+          pose?: string
+          subject?: string
           updated_at?: string
         }
         Relationships: []
       }
       catches: {
         Row: {
-          id: string
-          user_id: string
-          fish_id: string
-          qty: number
           created_at: string
+          fish_id: string
+          id: string
+          qty: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          fish_id: string
+          id?: string
+          qty?: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          fish_id?: string
+          id?: string
+          qty?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fleet_layout: {
+        Row: {
+          created_at: string
+          id: string
+          lanes: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          lanes?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          lanes?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      friendships: {
+        Row: {
+          addressee_id: string
+          created_at: string
+          id: string
+          requester_id: string
+          status: string
+        }
+        Insert: {
+          addressee_id: string
+          created_at?: string
+          id?: string
+          requester_id: string
+          status?: string
+        }
+        Update: {
+          addressee_id?: string
+          created_at?: string
+          id?: string
+          requester_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friendships_addressee_id_fkey"
+            columns: ["addressee_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friendships_requester_id_fkey"
+            columns: ["requester_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          recipient_id: string | null
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          recipient_id?: string | null
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          recipient_id?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      players: {
+        Row: {
+          avatar_index: number
+          avatar_url: string | null
+          created_at: string
+          id: string
+          last_seen: string
+          name: string
+          score: number
+          theme_id: string
+          user_id: string | null
+          username_norm: string | null
+        }
+        Insert: {
+          avatar_index?: number
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          last_seen?: string
+          name: string
+          score?: number
+          theme_id?: string
+          user_id?: string | null
+          username_norm?: string | null
+        }
+        Update: {
+          avatar_index?: number
+          avatar_url?: string | null
+          created_at?: string
+          id?: string
+          last_seen?: string
+          name?: string
+          score?: number
+          theme_id?: string
+          user_id?: string | null
+          username_norm?: string | null
+        }
+        Relationships: []
+      }
+      ship_overrides: {
+        Row: {
+          description: string | null
+          hidden: boolean
+          name: string | null
+          price: number | null
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          description?: string | null
+          hidden?: boolean
+          name?: string | null
+          price?: number | null
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          description?: string | null
+          hidden?: boolean
+          name?: string | null
+          price?: number | null
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tribe_members: {
+        Row: {
+          contribution: number
+          created_at: string
+          id: string
+          player_id: string
+          rank: string
+          tribe_id: string
+        }
+        Insert: {
+          contribution?: number
+          created_at?: string
+          id?: string
+          player_id: string
+          rank?: string
+          tribe_id: string
+        }
+        Update: {
+          contribution?: number
+          created_at?: string
+          id?: string
+          player_id?: string
+          rank?: string
+          tribe_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tribe_members_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: true
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tribe_members_tribe_id_fkey"
+            columns: ["tribe_id"]
+            isOneToOne: false
+            referencedRelation: "tribes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tribes: {
+        Row: {
+          created_at: string
+          emblem: string
+          id: string
+          motto: string
+          name: string
+          owner_id: string
+          score: number
+        }
+        Insert: {
+          created_at?: string
+          emblem?: string
+          id?: string
+          motto?: string
+          name: string
+          owner_id: string
+          score?: number
+        }
+        Update: {
+          created_at?: string
+          emblem?: string
+          id?: string
+          motto?: string
+          name?: string
+          owner_id?: string
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tribes_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
         }
         Insert: {
           id?: string
-          user_id?: string
-          fish_id: string
-          qty?: number
-          created_at?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
         }
         Update: {
           id?: string
+          role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
-          fish_id?: string
-          qty?: number
-          created_at?: string
         }
         Relationships: []
       }
@@ -416,6 +469,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: { app_role: ["admin", "moderator", "user"] },
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
