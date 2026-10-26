@@ -39,9 +39,12 @@ const tB=tex(0,0),tM=tex(1,0),tS=tex(2,1);
 const up=(u,t,src,pm)=>{gl.activeTexture(gl.TEXTURE0+u);gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,pm);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,src)};
 async function setScene(s){const[b,m]=await Promise.all([loadImg(s.bg),s.mask?loadImg(s.mask):Promise.resolve(null)]);up(0,tB,b,0);if(m)up(1,tM,m,0);else{gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,tM);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0,255]))}
 scn={sky:s.sky||scn.sky,sun:s.sun||scn.sun,foam:s.foam!==undefined?s.foam:.7}}
-async function setShips(list){const items=(list||[]).slice(0,N),key=items.map(s=>s.src).join('|');
+async function setShips(list){const items=(list||[]).slice(0,N),key=items.map(s=>s.src+(s.flip?'!f':'')).join('|');
 if(key!==atlasKey){const imgs=await Promise.all(items.map(s=>loadImg(s.src)));atlasKey=key;atx.clearRect(0,0,AW,AH);
-geo=items.map((s,i)=>{const im=imgs[i],[bx,by,bw,bh]=bbox(im),k=Math.min((CW-8)/bw,(CH-8)/bh),w=bw*k,h=bh*k,ox=i*CW+(CW-w)/2,oy=(CH-h)/2;atx.drawImage(im,bx,by,bw,bh,ox,oy,w,h);return{rect:[ox/AW,oy/AH,w/AW,h/AH],asp:bh/bw}});up(2,tS,atl,1)}
+geo=items.map((s,i)=>{const im=imgs[i],[bx,by,bw,bh]=bbox(im),k=Math.min((CW-8)/bw,(CH-8)/bh),w=bw*k,h=bh*k,ox=i*CW+(CW-w)/2,oy=(CH-h)/2;
+if(s.flip){atx.save();atx.translate(ox+w,oy);atx.scale(-1,1);atx.drawImage(im,bx,by,bw,bh,0,0,w,h);atx.restore()}
+else atx.drawImage(im,bx,by,bw,bh,ox,oy,w,h);
+return{rect:[ox/AW,oy/AH,w/AW,h/AH],asp:bh/bw}});up(2,tS,atl,1)}
 st=items.map((s,i)=>Object.assign({},geo[i],{x:s.x,y:s.y,w:s.width||.34,wl:s.waterline||.9,vis:s.visible!==false}))}
 function setParams(p){Object.assign(P,p)}
 function frame(n){if(dead)return;raf=requestAnimationFrame(frame);const dt=Math.min(.05,(n-last)/1000);last=n;

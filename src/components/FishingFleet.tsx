@@ -84,6 +84,7 @@ export function FishingFleet({ themeId, themeName, seaEngine }: { themeId: strin
           y: (b.top + b.height * 0.72 - r.top) / r.height,
           width: (b.width / r.width) * 0.92,
           waterline: 0.86,
+          flip: el.dataset["shipFlip"] === "1",
         };
       });
       eng.setShips(list);
@@ -141,6 +142,12 @@ export function FishingFleet({ themeId, themeName, seaEngine }: { themeId: strin
         const h = rollHaul();
         setHaul(h);
         void saveHaul(h).then((ok) => setHaulSaved(ok));
+        // "إشعارات عودة السفن" setting: flash the tab title when the hull returns.
+        if (typeof localStorage !== "undefined" && localStorage.getItem("ib.notify") !== "off" && document.hidden) {
+          document.title = "⚓ عاد القارب بالصيد! — عرش البحار";
+          const restore = () => { document.title = "عرش البحار — Throne of Seas"; window.removeEventListener("focus", restore); };
+          window.addEventListener("focus", restore);
+        }
       };
       if (reducedMotion) { landed(); return; }
       update(ship.id, "hauling");
@@ -179,7 +186,7 @@ export function FishingFleet({ themeId, themeName, seaEngine }: { themeId: strin
           ship.state === "sailingOut" || ship.state === "sailingHome" ? "fleet-ship-moving" : "",
         ].filter(Boolean).join(" ");
         return (
-          <div key={ship.id} className={laneClasses} style={style} data-sea-ship={ship.id}>
+          <div key={ship.id} className={laneClasses} style={style} data-sea-ship={ship.id} data-ship-flip={facingShore.includes(ship.state) ? "1" : "0"}>
             {selected === ship.id && !busy && (
               <div className="ship-actions" role="menu" aria-label={`أوامر السفينة ${ship.id}`}>
                 <button type="button" role="menuitem" className="ship-orb ship-orb-sail" onClick={() => sail(ship)} title={ship.state === "docked" ? "الذهاب للصيد" : "العودة للميناء"}>
