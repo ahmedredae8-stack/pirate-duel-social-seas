@@ -3,7 +3,7 @@ import { Check, Crown, Gem, Minus, Plus, Shield, ShipWheel, Swords, Users, X } f
 
 import { Button } from "@/components/ui/button";
 import { GameSprite } from "@/components/GameSprite";
-import { CREW_ART } from "@/lib/art";
+import { CREW_ART, CREW_ART_MAP } from "@/lib/art";
 import { CREWS, GEM_PACKS, WEAPONS } from "@/lib/items";
 import ShieldOverlay from "@/shields/ShieldOverlay";
 import shieldData from "@/shields/shields.json";
@@ -82,7 +82,7 @@ export function GameStore({ activeId, onSelect, onClose }: { activeId: string; o
   const liveShips = useLiveShips();
   const products = useMemo<Product[]>(() => {
     if (tab === "weapons") return WEAPONS.map((item, index) => ({ id: item.id, title: item.name, desc: `${item.desc} · قوة تدميرية ${item.power * 1000}`, price: item.price, currency: item.currency, art: art[`${item.id}:idle`] ? <img src={art[`${item.id}:idle`]} alt="" loading="lazy" /> : <GameSprite atlas="weapon" index={index} /> }));
-    if (tab === "crew") return CREWS.map((item, index) => ({ id: item.id, title: item.name, desc: `${item.desc} · ${item.hours}H`, price: item.price, currency: item.currency, art: <img src={art[`store:crew-${item.id}:idle`] || CREW_ART[index % CREW_ART.length]} alt="" loading="lazy" className="crew-photo" /> }));
+    if (tab === "crew") return CREWS.map((item, index) => ({ id: item.id, title: item.name, desc: `${item.desc} · ${item.hours}H`, price: item.price, currency: item.currency, art: <img src={art[`store:crew-${item.id}:idle`] || CREW_ART_MAP[item.id] || CREW_ART[index % CREW_ART.length]} alt="" loading="lazy" className="crew-photo" /> }));
     if (tab === "armor") return SHIELDS.map((s) => ({ id: s.id, title: s.name_ar, desc: `يصد: ${s.blocks.map((b) => BLOCK_AR[b] ?? b).join("، ")} · ${s.hits} ضربة${s.reflect ? ` · يعكس ${Math.round(s.reflect * 100)}%` : ""}`, price: 0, currency: "coin" as const, art: art[`store:shield-${s.id}:idle`] ? <img src={art[`store:shield-${s.id}:idle`]} alt="" loading="lazy" /> : <span className="shield-thumb"><ShieldOverlay tier={s.tier} state="idle" width="100%" /></span> }));
     if (tab === "ships") return [];
 

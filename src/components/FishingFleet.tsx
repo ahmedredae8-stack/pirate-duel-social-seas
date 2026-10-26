@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 
 import { fleetCatalog, hulls, type ShipPose } from "@/lib/fleetCatalog";
 import { Anchor, Sailboat, Users, Coins } from "lucide-react";
-import { CREW_ART } from "@/lib/art";
+import { CREW_ART, CREW_ART_MAP } from "@/lib/art";
 
 import { FleetCalibrator } from "@/components/FleetCalibrator";
 import { Button } from "@/components/ui/button";
@@ -292,7 +292,7 @@ function CrewPanel({ shipId, onClose }: { shipId: number; onClose: () => void })
             const on = active === crew.id;
             return (
               <li key={crew.id} className={on ? "crew-war-card on" : "crew-war-card"} style={{ animationDelay: `${index * 90}ms` }}>
-                <span className="crew-war-photo"><img src={art[`store:crew-${crew.id}:idle`] || CREW_ART[index % CREW_ART.length]} alt="" /></span>
+                <span className="crew-war-photo"><img src={art[`store:crew-${crew.id}:idle`] || CREW_ART_MAP[crew.id] || CREW_ART[index % CREW_ART.length]} alt="" /></span>
                 <strong>{crew.name}</strong>
                 <small>{crew.desc}</small>
                 <span className="crew-war-meta">{crew.hours} ساعات · {fmt(crew.price)}</span>

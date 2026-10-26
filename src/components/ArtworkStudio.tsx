@@ -20,10 +20,10 @@ type Item = { key: string; name: string; info: string; fallback?: string };
 const shipItems: Item[] = fleetCatalog.map(s => ({ key: `ship-${s.id}`, name: s.name, info: `${s.price.toLocaleString("ar-EG")} ${s.currency === "coin" ? "عملة" : "جوهرة"}${s.source === "tribe" ? " · قبيلة" : ""}`, fallback: s.hull }));
 import { saveStarterShips, useStarterShips } from "@/lib/starterShips";
 import { CREWS } from "@/lib/items";
-import { CREW_ART } from "@/lib/art";
+import { CREW_ART, CREW_ART_MAP } from "@/lib/art";
 import shieldData from "@/shields/shields.json";
 const storeItems: Item[] = [
-  ...CREWS.map((c, i) => ({ key: `store:crew-${c.id}`, name: `طاقم: ${c.name}`, info: "صورة في المتجر وغرفة الطاقم", fallback: CREW_ART[i % CREW_ART.length] })),
+  ...CREWS.map((c) => ({ key: `store:crew-${c.id}`, name: `طاقم: ${c.name}`, info: "صورة في المتجر وغرفة الطاقم", fallback: CREW_ART_MAP[c.id] ?? CREW_ART[0] })),
   ...shieldData.shields.map(s => ({ key: `store:shield-${s.id}`, name: s.name_ar, info: "صورة الدرع في المتجر" })),
 ];
 const itemsFor = (c: Cat) => c === "ship" ? shipItems : c === "rocket" ? rocketItems : storeItems;
