@@ -40,7 +40,7 @@ export function SettingsPage({ onOpenStudio }: { onOpenStudio?: () => void }) {
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { void isArtworkAdmin().then(setAdmin).catch(() => setAdmin(false)); }, [player?.id]);
-  useEffect(() => { setSound(!isMuted()); setQuality(pref("ib.quality", "high")); setVibrate(pref("ib.vibrate", "on") === "on"); setNotify(pref("ib.notify", "on") === "on"); }, []);
+  useEffect(() => { setSound(!isMuted()); setQuality(pref("ib.quality", "high")); setVibrate(pref("ib.vibrate", "on") === "on"); setNotify(pref("ib.notify", "on") === "on"); if (pref("ib.quality", "high") === "low") document.documentElement.classList.add("reduce-game-motion"); }, []);
 
   const store = (k: string, v: string) => { localStorage.setItem(k, v); playSfx("click", 0.5); };
   const toggleSound = () => { const n = !sound; setSound(n); setMuted(!n); if (n) startAmbient(); };
@@ -79,7 +79,7 @@ export function SettingsPage({ onOpenStudio }: { onOpenStudio?: () => void }) {
 
       <section className="cfg-list">
         <Row icon={<Music2 />} title="الصوت والموسيقى" on={sound} onToggle={toggleSound} />
-        <Row icon={<Vibrate />} title="الاهتزاز" on={vibrate} onToggle={() => { setVibrate(!vibrate); store("ib.vibrate", vibrate ? "off" : "on"); }} />
+        <Row icon={<Vibrate />} title="الاهتزاز" on={vibrate} onToggle={() => { try { navigator.vibrate?.(vibrate ? 0 : [40]); } catch { /* not supported */ } setVibrate(!vibrate); store("ib.vibrate", vibrate ? "off" : "on"); }} />
         <Row icon={<Bell />} title="إشعارات عودة السفن" on={notify} onToggle={() => { setNotify(!notify); store("ib.notify", notify ? "off" : "on"); }} />
         <div className="cfg-row">
           <span className="cfg-ico"><Gauge /></span><b>جودة الرسوم</b>
