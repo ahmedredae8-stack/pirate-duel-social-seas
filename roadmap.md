@@ -7,10 +7,15 @@
 - [x] Verify: sign-in, stage, ship menu orbs work
 - [ ] Re-upload missing assets: intro.mp3, night.mp3, click.mp3 (throne-coast.jpg no longer needed — theme removed)
 - [ ] User request: remove Tuscan sunset (throne-coast) background; stage uses animated sea engine with ships sitting inside the water
-- [ ] Send admin email + password to user
-- [ ] Old data export (players/messages/tribes) from original project — blocked on user upload of CSVs
-- [ ] Sea engine on home: ships rendered inside water (no shadow), studio settings (theme/water) apply to home sea, ship positions stay on lanes; first boat shown
-- [ ] Crew window must close
+- [ ] Battle system doesn't run (AHMED: duel flow from profile → VS → BattleScreen must actually work; epic battle polish)
+- [ ] Make player "admin1" an admin + move ship criteria/pricing into the admin studio
+- [ ] Shields: show their images in the store
+- [ ] Ships must flip/turn around when returning on the sea (face the other direction)
+- [ ] Settings: items inside don't do anything — wire them up
+- [ ] Messages window: broken/incomplete — redesign elegantly
+- [ ] Bottom dock buttons look like 3D images — make them flat, crisp buttons
+- [ ] Design remaining crew artwork (only sea/luck/guide exist)
+- [ ] Animated weapon sprites in battle (half done by user; rest coming later)
 - [ ] Admin studio: product image upload not saving/updating
 - [ ] Messages window redesign (strip non-essentials)
 - [ ] Pirate search in dock -> pro profile window (message/attack) -> VS screen + 10s countdown + initiative -> split battle arena with weapons 1-4 + bot when offline
