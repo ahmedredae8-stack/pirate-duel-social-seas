@@ -24,7 +24,7 @@ if(below>0.){vec3 wc=col*vec3(.85,.95,1.05);float wm=smoothstep(.2,.6,m);sr=mix(
 col=mix(col,sr,al*A);}
 gl_FragColor=vec4(col,1.);}`;
 function Wj(ux,uy,t){const s=2.6-1.6*Math.min(1,Math.max(0,(uy-.42)/.58)),px=ux*.558*s*14,py=uy*s*14;return Math.sin(px*.9+py*.4+t*1.1)*.5+Math.sin((-px*.5+py*.8)*1.7+t*1.5)*.28+Math.sin((px*.3-py)*2.9+t*2.1)*.15+Math.sin((px+py*.1)*5.3+t*2.9)*.07}
-const loadImg=src=>new Promise((r,j)=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>r(i);i.onerror=j;i.src=src});
+const imgCache=new Map(),boxCache=new WeakMap();const loadImg=src=>{let p=imgCache.get(src);if(!p){p=new Promise((r,j)=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>r(i);i.onerror=e=>{imgCache.delete(src);j(e)};i.src=src});imgCache.set(src,p)}return p};
 function bbox(img){try{const k=Math.min(1,256/Math.max(img.width,img.height)),w=Math.max(1,Math.round(img.width*k)),h=Math.max(1,Math.round(img.height*k)),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(img,0,0,w,h);const d=x.getImageData(0,0,w,h).data;let x0=w,y0=h,x1=0,y1=0;
 for(let y=0;y<h;y++)for(let xx=0;xx<w;xx++)if(d[(y*w+xx)*4+3]>16){if(xx<x0)x0=xx;if(xx>x1)x1=xx;if(y<y0)y0=y;if(y>y1)y1=y}if(x1<x0)return[0,0,img.width,img.height];return[x0/k,y0/k,(x1-x0+1)/k,(y1-y0+1)/k]}catch(e){return[0,0,img.width,img.height]}}
 export function createSeaScene(cv,opt){opt=opt||{};const gl=cv.getContext('webgl',{antialias:false});if(!gl)return{setScene(){},setShips(){},setParams(){},destroy(){}};
@@ -41,7 +41,7 @@ async function setScene(s){const[b,m]=await Promise.all([loadImg(s.bg),s.mask?lo
 scn={sky:s.sky||scn.sky,sun:s.sun||scn.sun,foam:s.foam!==undefined?s.foam:.7}}
 async function setShips(list){const items=(list||[]).slice(0,N),key=items.map(s=>s.src+(s.flip?'!f':'')).join('|');
 if(key!==atlasKey){const imgs=await Promise.all(items.map(s=>loadImg(s.src)));atlasKey=key;atx.clearRect(0,0,AW,AH);
-geo=items.map((s,i)=>{const im=imgs[i],[bx,by,bw,bh]=bbox(im),k=Math.min((CW-8)/bw,(CH-8)/bh),w=bw*k,h=bh*k,ox=i*CW+(CW-w)/2,oy=(CH-h)/2;
+geo=items.map((s,i)=>{const im=imgs[i];let bb=boxCache.get(im);if(!bb){bb=bbox(im);boxCache.set(im,bb)}const[bx,by,bw,bh]=bb,k=Math.min((CW-8)/bw,(CH-8)/bh),w=bw*k,h=bh*k,ox=i*CW+(CW-w)/2,oy=(CH-h)/2;
 if(s.flip){atx.save();atx.translate(ox+w,oy);atx.scale(-1,1);atx.drawImage(im,bx,by,bw,bh,0,0,w,h);atx.restore()}
 else atx.drawImage(im,bx,by,bw,bh,ox,oy,w,h);
 return{rect:[ox/AW,oy/AH,w/AW,h/AH],asp:bh/bw}});up(2,tS,atl,1)}
