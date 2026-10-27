@@ -102,6 +102,7 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
   const topBox = useRef<HTMLDivElement>(null);
   const bottomBox = useRef<HTMLDivElement>(null);
   const fid = useRef(0);
+  const firing = useRef<{ side: Side; ship: number } | null>(null);
 
   const myWorld = getSeaWorld(loadSeaWorldId());
   const foeWorld = worldFor(foe);
@@ -181,11 +182,13 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
           launchPoint: (side, ship, kind) => at(side, ship, spotOf(side, ship), kind === "waterline" ? 0 : 0.8),
           spotCenter: (side, ship, spot) => at(side, ship, spot, 0.45),
           onMissileImpact: (_i, e) => { const h = e.hits[0]; if (h && h.kind !== "miss" && h.kind !== "blocked") float(h.side, h.ship, "−10", "dmg"); },
+          // Ember, frost, harpoon and night-sun arrive later: no effect yet, onImpact applies the result.
+          onUnsupported: () => undefined,
           onImpact: (e) => {
             for (const h of e.hits) {
               if (h.kind === "blocked") { shieldState(h.side, h.ship, h.reflect ? "reflect" : "hit"); float(h.side, h.ship, "صدّ الدرع!", "block"); }
               else if (h.kind === "miss") float(h.side, h.ship, "طاشت!", "miss");
-              else { patchShip(h.side, h.ship, (s) => { s.hp = Math.max(0, s.hp - h.dmg); }); if (e.weapon !== "missile") float(h.side, h.ship, `−${h.dmg}`, "dmg"); }
+              else { patchShip(h.side, h.ship, (s) => { s.hp = Math.max(0, s.hp - h.dmg); }); if (e.weapon !== "missile") float(h.side, h.ship, `−${h.dmg}`, "dmg"); (h.side === "b" ? top : bottom).current?.kick(h.ship, 0.02, 0.008); }
               if (h.reflect) { const r = h.reflect; patchShip(e.side, r.ship, (s) => { s.hp = Math.max(0, s.hp - r.dmg); }); float(e.side, r.ship, `↩ −${r.dmg}`, "dmg"); }
             }
           },
@@ -335,6 +338,7 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
             </div>
           )}
           <button type="button" className="tos-btn bt-go" disabled={!ready} onClick={() => void commit()}>تأكيد الأمر</button>
+          {import.meta.env.DEV && <button type="button" className="tos-btn bt-demo" onClick={() => void commit(false, true)}>جولة تجريبية</button>}
           {autoNote && <p className="bt-auto"><Bot className="h-3.5 w-3.5" /> انتهى وقتك فقاد القبطان الآلي سفنك</p>}
         </footer>
       )}
