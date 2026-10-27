@@ -45,7 +45,7 @@ geo=items.map((s,i)=>{const im=imgs[i];let bb=boxCache.get(im);if(!bb){bb=bbox(i
 if(s.flip){atx.save();atx.translate(ox+w,oy);atx.scale(-1,1);atx.drawImage(im,bx,by,bw,bh,0,0,w,h);atx.restore()}
 else atx.drawImage(im,bx,by,bw,bh,ox,oy,w,h);
 return{rect:[ox/AW,oy/AH,w/AW,h/AH],asp:bh/bw}});up(2,tS,atl,1)}
-st=items.map((s,i)=>Object.assign({},geo[i],{x:s.x,y:s.y,w:s.width||.34,wl:s.waterline||.9,vis:s.visible!==false}))}
+st=items.map((s,i)=>Object.assign({},geo[i],{x:s.x,y:s.y,w:(s.width||.34)*(s.squash||1),asp:geo[i].asp/(s.squash||1),wl:s.waterline||.9,vis:s.visible!==false}))}
 function setParams(p){Object.assign(P,p)}
 function frame(n){if(dead)return;raf=requestAnimationFrame(frame);const dt=Math.min(.05,(n-last)/1000);last=n;
 const dpr=Math.min(devicePixelRatio||1,2),cw=cv.clientWidth||cv.width,tw=Math.min(IW,Math.round(cw*dpr)),th=Math.round(tw*IH/IW);if(cv.width!==tw||cv.height!==th){cv.width=tw;cv.height=th}gl.viewport(0,0,cv.width,cv.height);

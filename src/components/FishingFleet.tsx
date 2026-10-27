@@ -91,7 +91,8 @@ export function FishingFleet({ themeId, themeName, seaEngine }: { themeId: strin
           src: seaHull,
           x: (b.left + b.width / 2 - r.left) / r.width,
           y: (b.top + b.height * 0.72 - r.top) / r.height,
-          width: (b.width / r.width) * 0.92 * squash,
+          width: (b.width / r.width) * 0.92,
+          squash,
           waterline: 0.86,
           flip: t > 0.5,
         };
