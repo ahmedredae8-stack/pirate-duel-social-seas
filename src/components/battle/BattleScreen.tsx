@@ -148,9 +148,9 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
     return { x: o.x + p.x, y: o.y + p.y };
   };
 
-  const commit = async (timeout = false) => {
+  const commit = async (timeout = false, demo = false) => {
     if (phase !== "decide") return;
-    let mine = myChoice();
+    let mine = demo ? null : myChoice();
     if (!mine || validate(state, "a", mine)) { mine = aiChoose(state, "a", rnd); setAutoNote(timeout); }
     else setAutoNote(false);
     const theirs = aiChoose(state, "b", rnd);
@@ -190,7 +190,9 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
             }
           },
         };
+        firing.current = { side: ev.side, ship: ev.ship };
         await playFireEvent(ev, ctx);
+        firing.current = null;
         await wait(250);
       }
       else if (ev.t === "shieldBreak") { shieldState(ev.side, ev.ship, "break"); await wait(600); patchShip(ev.side, ev.ship, (s) => { s.shield = null; }); }
@@ -203,6 +205,14 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
     onZoom: (s: number, ms: number) => seas.current?.animate([{ transform: "scale(1)" }, { transform: `scale(${s})` }, { transform: "scale(1)" }], { duration: ms, easing: "ease-out" }),
     onFlash: (a: number, ms: number) => flash.current?.animate([{ opacity: a }, { opacity: 0 }], { duration: ms }),
     onHitStop: (ms: number) => { top.current?.pause(ms); bottom.current?.pause(ms); },
+    // Attacker hull is shoved: back for the cannon, down into the water for mortar/missiles.
+    onRecoil: (weapon: string) => {
+      const f = firing.current; if (!f) return;
+      const api = (f.side === "b" ? top : bottom).current;
+      if (weapon === "cannon") api?.kick(f.ship, -0.035, 0);
+      else if (weapon === "torpedo") api?.kick(f.ship, -0.015, 0.004);
+      else api?.kick(f.ship, 0, 0.012);
+    },
   };
 
   const hpSum = (s: DuelState, side: Side) => s[side].ships.reduce((x, y) => x + Math.max(0, y.hp), 0);
@@ -212,7 +222,8 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
   const weaponAim = pick.weapon ? WEAPONS[pick.weapon]?.aim : undefined;
   const ready = !!myChoice();
 
-  const overlay = (side: Side) => (_g: unknown, point: BattleSeaApi["point"]) => view[side].ships.map((s, i) => {
+  const overlay = (side: Side) => (_g: unknown, point: BattleSeaApi["point"], hullSize: BattleSeaApi["hullSize"]) => view[side].ships.map((s, i) => {
+    const hs = hullSize(i);
     const p = point(i, s.spot, 1.05);
     const fx = shieldFx[`${side}${i}`];
     const base = point(i, s.spot, 0);
@@ -225,7 +236,7 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
           </div>
         )}
         {s.alive && s.shield && (
-          <div className="bt-shield" style={{ left: base.x, top: base.y }}>
+          <div className="bt-shield" style={{ left: base.x, top: base.y - hs.h * 0.45, width: hs.w * 1.35, height: hs.h * 2.3 }}>
             <ShieldOverlay tier={s.shield.tier as 1 | 2 | 3 | 4 | 5} state={fx?.state ?? "idle"} trigger={fx?.trig ?? 0} width="100%" />
           </div>
         )}
@@ -241,7 +252,18 @@ function Arena({ me, foe, first, seed, onClose }: { me: Player; foe: Player; fir
             return <button key={spot} type="button" className={on ? "bt-aim on" : "bt-aim"} style={{ left: q.x, top: q.y }} onClick={() => { setPick((k) => ({ ...k, target: { ship: i, spot } })); playSfx("click", 0.6); }} aria-label={`السفينة ${i + 1} المكان ${spot ? "ب" : "أ"}`}>{spot ? "ب" : "أ"}</button>;
           }))}
         {side === "a" && phase === "decide" && s.alive && (
-          <button type="button" className={pick.ship === i ? "bt-own on" : "bt-own"} style={{ left: point(i, s.spot, 0.4).x, top: point(i, s.spot, 0.4).y }} onClick={() => { setPick((k) => ({ ...k, ship: i, target: undefined })); playSfx("click", 0.5); }} aria-label={`اختر سفينتك ${i + 1}`}>{i + 1}</button>
+          <>
+            <button type="button" className={pick.ship === i ? "bt-own on" : "bt-own"} style={{ left: point(i, s.spot, 0.4).x, top: point(i, s.spot, 0.4).y }} onClick={() => { setPick((k) => ({ ...k, ship: i, target: undefined, weapon: undefined, tier: undefined })); playSfx("click", 0.5); }} aria-label={`اختر سفينتك ${i + 1}`}>{i + 1}</button>
+            {pick.ship === i && (
+              <div className="bt-ring" style={{ left: point(i, s.spot, 1.6).x, top: point(i, s.spot, 1.6).y }} role="menu" aria-label={`أوامر السفينة ${i + 1}`}>
+                {iAttack
+                  ? <button type="button" role="menuitem" className={pick.mode === "attack" ? "on" : ""} onClick={() => { setPick((k) => ({ ...k, mode: "attack" })); playSfx("click", 0.5); }}><Swords /><span>هجوم</span></button>
+                  : <button type="button" role="menuitem" className={pick.mode === "move" ? "on" : ""} onClick={() => { setPick((k) => ({ ...k, mode: "move" })); playSfx("click", 0.5); }}><Move /><span>مناورة</span></button>}
+                <button type="button" role="menuitem" disabled={!mine.shields.length || !!s.shield} className={pick.mode === "shield" ? "on" : ""} onClick={() => { setPick((k) => ({ ...k, mode: "shield" })); playSfx("click", 0.5); }}><Shield /><span>درع</span></button>
+              </div>
+            )}
+            {pick.ship === i && pick.mode === "move" && <span className="bt-badge" style={{ left: point(i, s.spot ? 0 : 1, 0.4).x, top: point(i, s.spot ? 0 : 1, 0.4).y }}><Move /></span>}
+          </>
         )}
       </div>
     );
