@@ -68,23 +68,32 @@ export function FishingFleet({ themeId, themeName, seaEngine }: { themeId: strin
   // Stream each hull's on-screen spot into the WebGL sea so it sinks into the waves.
   useEffect(() => {
     if (!seaEngine) return;
-    let raf = 0;
-    const tick = () => {
+    let raf = 0, last = performance.now();
+    // Per-hull turn progress (0 = facing the sea, 1 = facing the shore): the hull narrows, mirrors, widens back.
+    const turn = new Map<string, number>();
+    const tick = (now: number) => {
       raf = requestAnimationFrame(tick);
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
       const host = layer.current, eng = seaEngine.current;
       if (!host || !eng) return;
       const r = host.getBoundingClientRect();
       if (!r.width || !r.height) return;
       const list = Array.from(host.querySelectorAll<HTMLElement>("[data-sea-ship]")).map((el) => {
         const b = el.getBoundingClientRect();
+        const id = el.dataset["seaShip"]!;
+        const want = el.dataset["shipFlip"] === "1" ? 1 : 0;
+        let t = turn.get(id) ?? want;
+        t = want > t ? Math.min(want, t + dt / 0.82) : Math.max(want, t - dt / 0.82);
+        turn.set(id, t);
+        const squash = Math.max(0.08, Math.abs(Math.cos(Math.PI * t)));
         return {
-          id: el.dataset["seaShip"]!,
+          id,
           src: seaHull,
           x: (b.left + b.width / 2 - r.left) / r.width,
           y: (b.top + b.height * 0.72 - r.top) / r.height,
-          width: (b.width / r.width) * 0.92,
+          width: (b.width / r.width) * 0.92 * squash,
           waterline: 0.86,
-          flip: el.dataset["shipFlip"] === "1",
+          flip: t > 0.5,
         };
       });
       eng.setShips(list);
