@@ -11,6 +11,8 @@ import crewThief from "@/assets/crew/thief.jpg";
 import crewGuard from "@/assets/crew/guard.jpg";
 import crewFixS from "@/assets/crew/fix-s.jpg";
 import crewFixM from "@/assets/crew/fix-m.jpg";
+import crewFixL from "@/assets/crew/fix-l.jpg";
+import crewFixLegend from "@/assets/crew/fix-legend.jpg";
 import sardine from "@/assets/fish/sardine.png";
 import mackerel from "@/assets/fish/mackerel.png";
 import tuna from "@/assets/fish/tuna.png";
@@ -27,7 +29,7 @@ export const CREW_ART = [crewSailor, crewLuck, crewGuide];
 /** Crew art keyed by the crew id from items.ts; falls back to the rotation for crews without art yet. */
 export const CREW_ART_MAP: Record<string, string> = {
   sailor: crewSailor, luck: crewLuck, guide: crewGuide,
-  thief: crewThief, guard: crewGuard, "fix-s": crewFixS, "fix-m": crewFixM,
+  thief: crewThief, guard: crewGuard, "fix-s": crewFixS, "fix-m": crewFixM, "fix-l": crewFixL, "fix-legend": crewFixLegend,
 };
 export const FISH_ART = { sardine, mackerel, tuna, swordfish, turtle, pearl };
 export const ACTION_ART = { sail: actSail, crew: actCrew, sell: actSell };
