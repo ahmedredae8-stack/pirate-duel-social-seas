@@ -3110,10 +3110,10 @@
 
 /* ═══════════ Dock buttons: flat crisp controls, not 3D renders ═══════════ */
 .game-dock ul { gap: .55rem; }
-.game-dock-button { width: 3.35rem !important; height: 3.35rem !important; padding: 0 !important; border-radius: 1.05rem !important; background: linear-gradient(180deg, color-mix(in oklab, var(--tos-panel-hi) 90%, transparent), var(--tos-abyss)) !important; border: 1.5px solid color-mix(in oklab, var(--tos-gold) 55%, transparent) !important; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.16), inset 0 -2px 5px rgba(0,0,0,.35), 0 6px 14px rgba(0,0,0,.45); display: grid !important; place-items: center; }
-.game-dock-button img { width: 58% !important; height: 58% !important; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,.65)); }
-.game-dock-button:hover { transform: translateY(-3px) scale(1.05); border-color: var(--tos-gold) !important; box-shadow: inset 0 1.5px 0 rgba(255,255,255,.2), 0 8px 18px rgba(0,0,0,.5), 0 0 16px color-mix(in oklab, var(--tos-gold) 35%, transparent); }
-.game-dock-button:active { transform: translateY(1px) scale(.95); box-shadow: inset 0 3px 8px rgba(0,0,0,.45); }
+.game-dock-button { width: 3.5rem !important; height: 3.5rem !important; padding: 0 !important; border-radius: 50% !important; background: transparent !important; border: 0 !important; box-shadow: 0 4px 0 color-mix(in oklab, var(--tos-gold) 35%, black), 0 7px 14px rgba(0,0,0,.5); display: grid !important; place-items: center; transition: transform .12s, box-shadow .12s; }
+.game-dock-button img { width: 100% !important; height: 100% !important; object-fit: contain; filter: none; }
+.game-dock-button:hover { transform: translateY(-2px); box-shadow: 0 6px 0 color-mix(in oklab, var(--tos-gold) 35%, black), 0 0 16px color-mix(in oklab, var(--tos-gold) 45%, transparent); }
+.game-dock-button:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in oklab, var(--tos-gold) 35%, black), 0 2px 5px rgba(0,0,0,.5); }
 
 /* ═══════════ Store shield thumbs: dome art fills the card ═══════════ */
 .shield-thumb { position: relative !important; width: 100% !important; height: auto !important; aspect-ratio: 5 / 3; }
