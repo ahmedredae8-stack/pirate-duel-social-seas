@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import dockChat from "@/assets/dock2/chat.png";
-import dockStats from "@/assets/dock2/stats.png";
-import dockBag from "@/assets/dock2/bag.png";
-import dockStore from "@/assets/dock2/store.png";
-import dockQuests from "@/assets/dock2/quests.png";
-import dockBattle from "@/assets/dock2/battle.png";
-import dockTribe from "@/assets/dock2/tribe.png";
+import dockChat from "@/assets/dock3/chat.png";
+import dockStats from "@/assets/dock3/stats.png";
+import dockBag from "@/assets/dock3/bag.png";
+import dockStore from "@/assets/dock3/store.png";
+import dockQuests from "@/assets/dock3/quests.png";
+import dockBattle from "@/assets/dock3/battle.png";
+import dockTribe from "@/assets/dock3/tribe.png";
 import { playSfx } from "@/lib/sound";
 
 export type DockAction = "chat" | "stats" | "bag" | "store" | "quests" | "battle" | "tribe";
