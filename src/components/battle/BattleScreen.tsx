@@ -31,9 +31,9 @@ export const OVERTIME_AT = 30; // last 30s: energy flows twice as fast
 export const MANA_PER_SEC = 0.75;
 export type CardId = "cannon" | "missile" | "mortar" | "torpedo" | "shield" | "royal";
 export const CARDS: { id: CardId; cost: number; name: string; icon: string; note: string }[] = [
-  { id: "cannon", cost: 2, name: "المدفع", icon: "💣", note: `ضرر ${WEAPONS.cannon!.dmg}` },
+  { id: "cannon", cost: 2, name: "المدفع", icon: "💣", note: `ضرر ${WEAPONS["cannon"]!.dmg}` },
   { id: "missile", cost: 3, name: "الصواريخ", icon: "🚀", note: "تتبع الهدف" },
-  { id: "mortar", cost: 4, name: "الهاون", icon: "💥", note: `ضرر ${WEAPONS.mortar!.dmg} + شظايا` },
+  { id: "mortar", cost: 4, name: "الهاون", icon: "💥", note: `ضرر ${WEAPONS["mortar"]!.dmg} + شظايا` },
   { id: "torpedo", cost: 5, name: "الطوربيد", icon: "🔱", note: "يخترق الدروع" },
   { id: "shield", cost: 3, name: SHIELDS[2]!.name, icon: "🛡️", note: "يصد ضربة" },
   { id: "royal", cost: 6, name: "الدرع الملكي", icon: "👑", note: "يعكس الضرر" },
