@@ -20,6 +20,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ShieldsTestRouteImport } from './routes/shields-test'
 import { Route as ShipyardRouteImport } from './routes/shipyard'
 import { Route as TribesRouteImport } from './routes/tribes'
+import { Route as AdminBattleRouteImport } from './routes/admin_.battle'
 import { Route as VillageIdRouteImport } from './routes/village.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -77,6 +78,11 @@ const TribesRoute = TribesRouteImport.update({
   path: '/tribes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminBattleRoute = AdminBattleRouteImport.update({
+  id: '/admin_/battle',
+  path: '/admin/battle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VillageIdRoute = VillageIdRouteImport.update({
   id: '/village/$id',
   path: '/village/$id',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/shields-test': typeof ShieldsTestRoute
   '/shipyard': typeof ShipyardRoute
   '/tribes': typeof TribesRoute
+  '/admin/battle': typeof AdminBattleRoute
   '/village/$id': typeof VillageIdRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/shields-test': typeof ShieldsTestRoute
   '/shipyard': typeof ShipyardRoute
   '/tribes': typeof TribesRoute
+  '/admin/battle': typeof AdminBattleRoute
   '/village/$id': typeof VillageIdRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/shields-test': typeof ShieldsTestRoute
   '/shipyard': typeof ShipyardRoute
   '/tribes': typeof TribesRoute
+  '/admin_/battle': typeof AdminBattleRoute
   '/village/$id': typeof VillageIdRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/shields-test'
     | '/shipyard'
     | '/tribes'
+    | '/admin/battle'
     | '/village/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/shields-test'
     | '/shipyard'
     | '/tribes'
+    | '/admin/battle'
     | '/village/$id'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/shields-test'
     | '/shipyard'
     | '/tribes'
+    | '/admin_/battle'
     | '/village/$id'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   ShieldsTestRoute: typeof ShieldsTestRoute
   ShipyardRoute: typeof ShipyardRoute
   TribesRoute: typeof TribesRoute
+  AdminBattleRoute: typeof AdminBattleRoute
   VillageIdRoute: typeof VillageIdRoute
 }
 
@@ -265,6 +278,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TribesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin_/battle': {
+      id: '/admin_/battle'
+      path: '/admin/battle'
+      fullPath: '/admin/battle'
+      preLoaderRoute: typeof AdminBattleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/village/$id': {
       id: '/village/$id'
       path: '/village/$id'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShieldsTestRoute: ShieldsTestRoute,
   ShipyardRoute: ShipyardRoute,
   TribesRoute: TribesRoute,
+  AdminBattleRoute: AdminBattleRoute,
   VillageIdRoute: VillageIdRoute,
 }
 export const routeTree = rootRouteImport
